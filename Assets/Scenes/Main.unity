@@ -238,7 +238,10 @@ MonoBehaviour:
   WallTiles:
   - {fileID: 11400000, guid: 5932e89e397d4a74ba73b433a18eaee8, type: 2}
   - {fileID: 11400000, guid: d43c2bd2464dd08499959622af9d2167, type: 2}
-  FoodPrefab: {fileID: 3319673263397884304, guid: 8db4d7e2efa3ba945a38aba5e9d6d4ae, type: 3}
+  FoodPrefabs:
+  - {fileID: 446347141837132291, guid: 2b45644eeeed1d54bb70b7a227c07ded, type: 3}
+  - {fileID: 3317863193958234350, guid: 8db4d7e2efa3ba945a38aba5e9d6d4ae, type: 3}
+  WallPrefab: {fileID: 6474057137256288776, guid: dce33e17b246c3446b79d30135858166, type: 3}
 --- !u!1 &679597727
 GameObject:
   m_ObjectHideFlags: 0
