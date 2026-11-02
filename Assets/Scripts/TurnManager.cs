@@ -6,6 +6,8 @@ public class TurnManager
 
    private int m_TurnCount;
 
+    public bool Waiting = false;
+
    public TurnManager()
    {
        m_TurnCount = 1;

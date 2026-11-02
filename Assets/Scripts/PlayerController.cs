@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 m_MoveTarget;
     private Animator m_Animator;
 
+    public Vector2Int Cell => m_CellPosition;
+
     [SerializeField]
     private float MoveSpeed = 1;
 
@@ -44,13 +46,34 @@ public class PlayerController : MonoBehaviour
             m_IsMoving = true;
             m_MoveTarget = m_Board.CellToWorld(m_CellPosition);
         }
-
+        
         m_Animator.SetBool("Moving", m_IsMoving);
     }
 
 
     private void Update()
     {
+        if(GameManager.Instance.TurnManager.Waiting)
+        {
+            return;
+        }
+        
+        if (m_IsMoving)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, m_MoveTarget, MoveSpeed * Time.deltaTime);
+
+            if (transform.position == m_MoveTarget)
+            {
+                m_IsMoving = false;
+                m_Animator.SetBool("Moving", false);
+                var cellData = m_Board.GetCellData(m_CellPosition);
+                if (cellData.ContainedObject != null)
+                    cellData.ContainedObject.PlayerEntered();
+            }
+
+            return;
+        }
+
         if (m_IsGameOver)
         {
             if (Keyboard.current.enterKey.wasPressedThisFrame)
@@ -102,22 +125,11 @@ public class PlayerController : MonoBehaviour
                     MoveTo(newCellTarget, false);
                     cellData.ContainedObject.PlayerEntered();
                 }
+                else
+                {
+                    m_Animator.SetTrigger("Attack");
+                }
             }
-        }
-        if (m_IsMoving)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, m_MoveTarget, MoveSpeed * Time.deltaTime);
-
-            if (transform.position == m_MoveTarget)
-            {
-                m_IsMoving = false;
-                m_Animator.SetBool("Moving", false);
-                var cellData = m_Board.GetCellData(m_CellPosition);
-                if (cellData.ContainedObject != null)
-                    cellData.ContainedObject.PlayerEntered();
-            }
-
-            return;
         }
     }
     public void GameOver()
